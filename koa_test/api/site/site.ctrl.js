@@ -1,3 +1,5 @@
+const fs = require('fs');
+
 //[{"id": 0,"site_nm": "www","login_id": "www","login_pw": "www","memo": "메모"},{"id": 0,"site_nm": "www2","login_id": "www2","login_pw": "www2","memo": "메모2"}]
 // string data는 stringify 후 parse하여 배열 처리 가능...
 // json_data = JSON.stringify(ctx.request.body);
@@ -16,6 +18,9 @@
 
 
 const sql_comm = require('../../db/sql_comm.js');
+//
+const sql_json = require('../../db/sql.json');
+
 
 // GET => http://21cnkc.iptime.org:4000/api/site/search?site_nm=google
 exports.get_search = async (ctx) => {
@@ -23,7 +28,17 @@ exports.get_search = async (ctx) => {
     let site_nm = ctx.query.site_nm;
     console.log("site_nm : " + site_nm);
 
-    sql = "SELECT * FROM site WHERE site_nm like ?;";
+    let req_json_data = {};
+    req_json_data = ctx.request.body;
+
+    for (var i in req_json_data) {
+        console.log(req_json_data + " : " + req_json_data[i]);
+    }
+
+    //sql = "SELECT * FROM site WHERE site_nm like ?;";
+    sql = sql_json.site.search.toString().replace(/,/g, '');
+
+    console.log("SQL : " + sql);
     ctx.body = await sql_comm.siud_normal(sql, [ '%'+site_nm+'%' ]);
 };
 
@@ -38,7 +53,11 @@ exports.get_query = async (ctx) => {
     obj["param"] = { "id": id };
     console.log("id : " + id);
 
-    sql = "SELECT * FROM site WHERE id = ?;";
+    //sql = "SELECT * FROM site WHERE id = ?;";
+    sql = sql_json.site.seek.toString().replace(/,/g, '');
+
+    console.log("SQL : " + sql);
+
     ctx.body = await sql_comm.siud_normal(sql, [ id ]);  // [ obj["param"] ] 배열로 -> ?, ?, ... 물음표 만큼 배열 처리...
     // 또는 아래처럼 ...
     //sql = "SELECT * FROM site WHERE ?;";

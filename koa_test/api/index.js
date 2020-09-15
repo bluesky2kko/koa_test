@@ -1,6 +1,8 @@
 const KorRouter = require('koa-router');
 const router = new KorRouter();
 
+const comm = require('./comm');
+//
 const books = require('./books');
 const login = require('./login');
 const site = require('./site');
@@ -10,6 +12,8 @@ const upload = require('./upload');
 const download = require('./download');
 const lguplus = require('./lguplus');
 
+router.use('/comm', comm.routes());
+//
 router.use('/books', books.routes());
 router.use('/login', login.routes());
 router.use('/site', site.routes());

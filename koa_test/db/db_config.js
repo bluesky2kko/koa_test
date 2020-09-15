@@ -4,7 +4,8 @@ module.exports = (function() {
             host: 'localhost',
             port: '3306',
             user: 'root',
-            password: 'xpogate!@#',
+            //password: 'xpogate!@#',
+            password: process.env.DB_PW_LOCAL,  // .env 숨김파일 import
             database: 'mysql',
             dateStrings: true // nodejs timestamp와 같은 형식으로...
         },
@@ -12,7 +13,8 @@ module.exports = (function() {
             host: 'localhost',
             port: '3306',
             user: 'xpo',
-            password: 'xpogate',
+            //password: 'xpogate',
+            password: process.env.DB_PW_DEV,    // .env 숨김파일 import
             database: '21cnkc',
             connectionLimit: 10,
             waitForConnections: true, // pool에 여유 커넥션이 없는 경우 대기 여부
@@ -29,7 +31,8 @@ module.exports = (function() {
             host: 'localhost',
             port: '3306',
             user: 'xpo',
-            password: 'xpogate',
+            //password: 'xpogate',
+            password: process.env.DB_PW_REAL,   // .env 숨김파일 import
             database: '21cnkc',
             connectionLimit: 10,
             dateStrings: true // nodejs timestamp와 같은 형식으로...

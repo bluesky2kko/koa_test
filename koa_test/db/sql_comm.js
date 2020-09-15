@@ -1,4 +1,4 @@
-// 트랜잭션이 아니놈만 처리 ...
+// 트랜잭션이 아닌놈만 처리 ...
 exports.siud_normal = async (sql, param) => {
     let rows, fields;
     try {
@@ -8,9 +8,10 @@ exports.siud_normal = async (sql, param) => {
             //console.log("rows : " + rows);
             //console.log("fields : " + fields);
             // rows.affectedRows, rows.insertId
-            for(var idx in rows) {
-                console.log(rows[idx])
-            }
+            //
+            // for(var idx in rows) {
+            //     console.log(rows[idx])
+            // }
 
         } catch (err) {
             console.log("sql error : " + sql + "\n" + err.sqlMessage);

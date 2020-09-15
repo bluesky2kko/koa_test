@@ -1,0 +1,39 @@
+{
+    "comm": {
+        "seek": "SELECT * FROM <table> WHERE id = ?;",
+        "insert": "INSERT INTO <table> SET ?;",
+        "update": "UPDATE <table> SET ? WHERE ?;",
+        "delete": "DELETE FROM <table> WHERE id IN (?);"
+    },
+    "login": {
+        "inquiry": ["SELECT login_id FROM login WHERE login_id = ? AND login_pw = ?; "]
+    },
+    "site": {
+        "search": ["SELECT * FROM site WHERE site_nm like ?;"],
+        "limit": ["SELECT * FROM site LIMIT ?;"],
+        "insert_multi": ["INSERT INTO site (id, site_nm, login_id, login_pw, memo) VALUES ?;"],
+        "__seek,i,u,d__": "S,I,U,D"
+    },
+    "jepum": {
+        "search": ["SELECT * FROM jepum WHERE prod_nm like ?;"],
+        "__seek,i,u,d__": "S,I,U,D"
+    },
+    "tree": {
+        "search": [
+            "SELECT c.id, c.group_nm, c.parent_id, c.group_cd, c.lev, c.pos, x.id as id_members, x.member_nm ",
+            "FROM group_t c left outer join ",
+            "    ( ",
+            "    SELECT * FROM members a, members_basic b ",
+            "    WHERE a.id = b.id_members ",
+            "    ) x ",
+            "ON c.id = x.id_group ",
+            "WHERE group_cd IN (?) "
+        ],
+        "inquiry": [
+            "SELECT *, (SELECT group_nm FROM group_t WHERE id=a.parent_id) as group_nm_up ",
+            "FROM group_t a ",
+            "WHERE id = ? "
+        ],
+        "__i,u,d__": "I,U,D"
+    }
+}

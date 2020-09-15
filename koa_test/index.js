@@ -5,6 +5,16 @@
 // 1-4 koa-router 사용하기 참조
 // https://backend-intro.vlpt.us/1/04.html
 
+require('dotenv').config(); // .env 숨김파일 import
+//console.log(process.env.SITE_SEARCH);
+//console.log(process.env.SITE_SEEK);
+
+// const sql_json = require('./db/sql.json');
+// let sql = sql_json.site.search.toString();
+// sql = sql.replace(/,/g, '');
+// console.log("SQL : " + sql);
+
+
 const Koa = require('koa');
 const KorRouter = require('koa-router');
 //---------------------------------------------------
