@@ -46,8 +46,41 @@ let corsOptions = {
 app.use(cors(corsOptions));
 
 
+app.use(async (ctx, next) => {
 
+    //console.log("ctx.request.url : " + ctx.request.url);
+
+    if (ctx.request.url !== "/api/login") {
+        const req_h = ctx.request.headers
+        for(let k in req_h) {
+            console.log("" + k + " >> " + req_h[k])
+        }
+
+        const a_token = ctx.request.headers.access_token;
+        console.log("access_token : " + a_token);
+        if (a_token === undefined) {
+            ctx.body = "Login";     // vue에서 login 화면으로 go 처리
+            return false;
+        }
+        //
+        const token = require('./config/token.js');
+
+        const out = await token.getToken(a_token);
+        console.log("out : " + out);
+        //
+        if (out != "OK") {
+            ctx.body = "Login";     // vue에서 login 화면으로 go 처리
+            return false;
+        }
+    }
+
+    console.log("== next() ==");
+
+    await next();
+});
 //
+
+
 
 //---------------------------------------
 // pool 전역변수로 사용 -> var 없이 선언함
@@ -85,6 +118,7 @@ const api = require('./api');
 app.use(Koa2formidable());  // multipart
 
 app.use(KorbodyParser()); // 바디파서 적용, 라우터 적용코드보다 상단에 있어야합니다.
+
 
 router.use('/api', api.routes()); // api 라우트를 /api 경로 하위 라우트로 설정
 

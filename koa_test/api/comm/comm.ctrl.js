@@ -58,7 +58,7 @@ function comm_cmd(p_url) {
     if (p_url.indexOf("/SM?") > -1) {
         cmd = "search";
     }
-    else if (p_url.indexOf("/INQ?") > -1) {
+    else if (p_url.indexOf("/Q?") > -1) {
         cmd = "inquiry";
     }
     //
@@ -71,6 +71,9 @@ function comm_cmd(p_url) {
     else if (p_url.indexOf("/U?") > -1) {
         cmd = "update";
     }
+    else if (p_url.indexOf("/U2?") > -1) {
+        cmd = "update2";
+    }    
     else if (p_url.indexOf("/D?") > -1) {
         cmd = "delete";
     }
@@ -85,11 +88,10 @@ function comm_cmd(p_url) {
 function comm_menu(p_cmd, p_menu) {
     //
     let menu;
-    if (p_cmd=="search" || p_cmd=="inquiry") {
-        menu = p_menu;
-    } else {
-        // seek, insert, update, delete
+    if (p_cmd=="seek" || p_cmd=="insert" || p_cmd=="update" || p_cmd=="delete") {
         menu = "comm";
+    } else {        
+        menu = p_menu;  // search, inquiry, update2
     }
     console.log("menu : " + menu);
 
@@ -209,7 +211,7 @@ exports.post_siud = async (ctx) => {
     
         let req = ctx.request.body;
         let id = req.id;
-        console.log("id : " + id)
+        console.log("id : " + id);
 
         delete req.id; // update_column 속의 id 컬럼 제거
 
@@ -218,7 +220,7 @@ exports.post_siud = async (ctx) => {
 
     } 
     else {
-        // search, inquery, delete
+        // search, inquery, delete, update2
         arr_para = comm_para("post", ctx.request.body);
 
     }

@@ -10,14 +10,16 @@ const ctrl = require('./comm.ctrl');
 // 1 : comm, 2: site(테이블명)
 router.get('/SM', ctrl.get_query);        // search 여러건
 router.get('/S', ctrl.get_query);         // seek 1건
-router.get('/INQ', ctrl.get_query);       // inquiry 1건
+router.get('/Q', ctrl.get_query);         // inquiry 1건
 //
 router.post('/SM', ctrl.post_siud);       // search 여러건 => 조건검색 
-router.post('/INQ', ctrl.post_siud);      // inquiry 1건
-router.post('/I', ctrl.post_siud);        // 2. 1건만 입력
+router.post('/Q', ctrl.post_siud);        // inquiry 1건
+//
+//
+router.post('/I', ctrl.post_siud);        // 1 건만 입력
 router.put('/U', ctrl.post_siud);         // 1. PUT : 자원의 전체 교체 (싱글용)
-router.patch('/U', ctrl.post_siud);       // 2. PATCH : 자원의 부분 교체 (싱글용)
-router.delete('/D', ctrl.post_siud);
+router.patch('/U2', ctrl.post_siud);      // 2. PATCH : 자원의 부분 교체 (싱글용)
+router.delete('/D', ctrl.post_siud);      // Single, Multi 동시처리 가능...
 //
 //
 router.post('/MI', ctrl.post_multiInsert);     // 1. 여러건 1번에 입력

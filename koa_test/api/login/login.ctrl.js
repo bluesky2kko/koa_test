@@ -2,36 +2,67 @@ const sql_comm = require('../../db/sql_comm.js');
 
 // POST => http://21cnkc.iptime.org:4000/api/login
 exports.post_login = async (ctx) => {
+
+    let jwt = require("jsonwebtoken");
+    let secretObj = require("../../config/jwt.js");
+    
+    
     //{"login_id": "joncc", "login_pw": "..."}
-    let sql = "";
-    let req_json_data = {};
-    req_json_data = ctx.request.body;
-    //
-    let id = req_json_data.login_id;
-    let pw = req_json_data.login_pw;
+    let req = ctx.request.body;
+    let id = req.login_id;
+    let pw = req.login_pw;
     
-    sql = "SELECT json_value(data,'$.login_id') as login_id "
-    sql += "FROM json_login a "
-    sql += "WHERE json_value(data,'$.login_id') = ? "
-    sql += "AND json_value(data,'$.login_pw') = ? ";
+    let sql = "SELECT COUNT(login_id) as cnt FROM login WHERE login_id = ? AND login_pw = ?;";
 
-    console.log(id + " : " + pw);
-    
-    ctx.body = await sql_comm.siud_normal(sql, [id, pw]);
-};
-//
-exports.get_token = async (ctx) => {
-    let sql = "";
-    let req_json_data = {};
-    req_json_data = ctx.request.body;
-    //
-    let id = req_json_data.login_id;
-    
-    sql = "SELECT * "
-    sql += "FROM json_login a "
-    sql += "WHERE json_value(data,'$.login_id') = ? ";
+    let obj = await sql_comm.siud_normal(sql, [id, pw]);
+    console.log(id + " / " + pw + " => " + obj[0].cnt);
 
-    console.log(id + " : ");
+    if (obj[0].cnt > 0) {
+        let token = jwt.sign(
+            {
+                email: "xpo@example.com"   // 토큰의 내용(payload)
+            },
+            secretObj.secret ,    // 비밀 키
+            {
+                expiresIn: '1m'    // 유효 시간은 5분
+            }
+        );
     
-    ctx.body = await sql_comm.siud_normal(sql, [id]);
+        console.log("create token => " + token);
+
+        ctx.body = [token];
+    } else {
+        console.log("LOGIN Error");
+
+        ctx.body = "LOGIN Error";
+    }
 };
+
+// exports.get_token = async (ctx) => {
+//     let req = ctx.request.header;
+//     //
+//     // for (let i in req) {
+//     //     console.log("==> " + i + " : " + req[i])
+//     // }
+//     //
+//     console.log("access_token : " + req.access_token);
+//     let token = req.access_token;
+
+//     try {
+//         let decoded = jwt.verify(token, secretObj.secret);
+        
+//         console.log("decoded ==> " + decoded);
+//         for (let i in decoded) {
+//             console.log("==> " + i + " : " + decoded[i])
+//         }
+    
+//         if (decoded) {
+//             ctx.body = "권한이 있어서 API 수행 가능";
+//         } else {
+//             ctx.body = "권한이 없습니다.";
+//         }
+
+//     } catch (error) {
+//         console.log(" catch error => " + error);
+//     }
+// };

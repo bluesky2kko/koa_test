@@ -5,18 +5,19 @@
         "update": "UPDATE <table> SET ? WHERE ?;",
         "delete": "DELETE FROM <table> WHERE id IN (?);"
     },
-    "login": {
-        "inquiry": ["SELECT login_id FROM login WHERE login_id = ? AND login_pw = ?; "]
-    },
     "site": {
-        "search": ["SELECT * FROM site WHERE site_nm like ?;"],
+        "search": ["SELECT id, site_nm, login_id, memo FROM site WHERE site_nm like ?;"],
+        "inquiry": [
+            "SELECT id, aes_decrypt(unhex(login_pw),'a') as login_pw ",
+            "FROM site ",
+            "WHERE id = ?;"
+        ],
+        "update2":["UPDATE site SET login_pw = hex(aes_encrypt(?, 'a')) WHERE id = ?;"],
         "limit": ["SELECT * FROM site LIMIT ?;"],
-        "insert_multi": ["INSERT INTO site (id, site_nm, login_id, login_pw, memo) VALUES ?;"],
-        "__seek,i,u,d__": "S,I,U,D"
+        "insert_multi": ["INSERT INTO site (id, site_nm, login_id, login_pw, memo) VALUES ?;"]
     },
     "jepum": {
-        "search": ["SELECT * FROM jepum WHERE prod_nm like ?;"],
-        "__seek,i,u,d__": "S,I,U,D"
+        "search": ["SELECT * FROM jepum WHERE prod_nm like ?;"]
     },
     "tree": {
         "search": [

@@ -3,7 +3,7 @@ const router = new KorRouter();
 
 const ctrl = require('./login.ctrl');
 
-router.post('/', ctrl.post_login);        // 1건
-router.get('/token', ctrl.get_token);   // login/token
+router.post('/', ctrl.post_login);      // login/
+//router.get('/token', ctrl.get_token);   // login/token
 
 module.exports = router;
