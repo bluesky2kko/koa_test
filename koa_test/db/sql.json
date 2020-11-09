@@ -5,29 +5,60 @@
         "update": "UPDATE <table> SET ? WHERE ?;",
         "delete": "DELETE FROM <table> WHERE id IN (?);"
     },
+    "company": {
+        "__LIMIT ?, ?": "start-index, 건수",
+        "search": "SELECT * FROM company WHERE comp_nm like ? ORDER BY id LIMIT ?, ?;"
+    },    
     "site": {
-        "search": ["SELECT id, site_nm, login_id, memo FROM site WHERE site_nm like ?;"],
+        "search": "SELECT id, site_nm, login_id, memo FROM site WHERE site_nm like ?;",
         "inquiry": [
             "SELECT id, aes_decrypt(unhex(login_pw),'a') as login_pw ",
             "FROM site ",
             "WHERE id = ?;"
         ],
-        "update2":["UPDATE site SET login_pw = hex(aes_encrypt(?, 'a')) WHERE id = ?;"],
-        "limit": ["SELECT * FROM site LIMIT ?;"],
-        "insert_multi": ["INSERT INTO site (id, site_nm, login_id, login_pw, memo) VALUES ?;"]
+        "limit": "SELECT * FROM site LIMIT ?;",
+        "update2": "UPDATE site SET login_pw = hex(aes_encrypt(?, 'a')) WHERE id = ?;",
+        "insert_multi": "INSERT INTO site (id, site_nm, login_id, login_pw, memo) VALUES ?;"
     },
     "jepum": {
-        "search": ["SELECT * FROM jepum WHERE prod_nm like ?;"]
+        "search": "SELECT * FROM jepum WHERE prod_nm like ?;"
+    },
+    "members": {
+        "search": [
+            "SELECT * ",
+            "FROM members a, members_basic b ",
+            "WHERE member_nm like ? ",
+            "AND a.id = b.id_members; "
+        ],
+        "inquiry2": [
+            "SELECT * ",
+            "FROM members a, members_basic b ",
+            "WHERE a.id = ? ",
+            "AND a.id = b.id_members ",
+            "LIMIT 1; "
+        ],
+        "inquiry": [
+            "SELECT * FROM members WHERE id = ?; ",            
+            "SELECT * FROM members_basic WHERE id_members = ?; ",
+            "SELECT * FROM members_tel WHERE id_members = ?; ",
+            "SELECT * FROM members_fax WHERE id_members = ?; ",
+            "SELECT * FROM members_email WHERE id_members = ?; ",
+            "SELECT * FROM members_sotial WHERE id_members = ?; ",
+            "SELECT * FROM members_anvday WHERE id_members = ?; ",
+            "SELECT * FROM members_addr WHERE id_members = ?; "
+        ]
     },
     "tree": {
         "search": [
-            "SELECT c.id, c.group_nm, c.parent_id, c.group_cd, c.lev, c.pos, x.id as id_members, x.member_nm ",
+            "SELECT c.id, c.group_nm, c.parent_id, c.group_cd, c.lev, c.pos, x.id_members, x.member_nm ",
             "FROM group_t c left outer join ",
             "    ( ",
-            "    SELECT * FROM members a, members_basic b ",
+            "    SELECT b.id_members, b.member_nm, c.id_group_t ",
+            "    FROM members a, members_basic b, members_group_t c ",
             "    WHERE a.id = b.id_members ",
+            "    AND b.id_members = c.id_members ",
             "    ) x ",
-            "ON c.id = x.id_group ",
+            "ON c.id = x.id_group_t ",
             "WHERE group_cd IN (?) "
         ],
         "inquiry": [
@@ -36,5 +67,17 @@
             "WHERE id = ? "
         ],
         "__i,u,d__": "I,U,D"
+    },
+    "todo": {
+        "search": "SELECT * FROM todo WHERE start like ?;",
+        "inquiry": [
+            "SELECT id, name, color, ",
+            "   SUBSTR(start, 1, 10) as start_date, ",
+            "   SUBSTR(start, 12, 5) as start_time, ",
+            "   SUBSTR(end, 1, 10) as end_date, ",
+            "   SUBSTR(end, 12, 5) as end_time ",
+            "FROM todo a ",
+            "WHERE id = ? "
+        ]
     }
 }

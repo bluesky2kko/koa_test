@@ -1,0 +1,6 @@
+{
+    "members": {
+        "insert": "CALL 21cnkc.MEMBERS_IU(?,@RESULT); SELECT @RESULT as id;",
+        "update": "CALL 21cnkc.MEMBERS_IU_JSON(?);"
+    }
+}

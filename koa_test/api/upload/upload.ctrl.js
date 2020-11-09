@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const dateFormat = require('../comm/dateFormat.js')
+const dateFormat = require('../../comm_module/dateFormat.js')
 const upload= {
     UPLOAD: '/upload',
     IMAGE: '/image/',

@@ -30,3 +30,32 @@ exports.getToken = async (a_token) => {
         return out;
     }
 };
+exports.setToken = async () => {
+
+    let jwt = require("jsonwebtoken");
+    let secretObj = require("./jwt.js");
+    
+    let token_value = "";
+    
+    try {
+        token_value = jwt.sign(
+            {
+                email: "xpo@example.com"   // 토큰의 내용(payload)
+            },
+            secretObj.secret ,    // 비밀 키
+            {
+                expiresIn: '60m'    // 유효 시간은 60분
+            }
+        );
+    
+        console.log("create token => " + token_value);
+
+    } catch (error) {
+        console.log(" catch error => " + error);
+        //
+        token_value = "Error";
+
+    } finally {
+        return token_value;
+    }
+};

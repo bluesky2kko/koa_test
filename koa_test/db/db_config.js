@@ -7,6 +7,7 @@ module.exports = (function() {
             //password: 'xpogate!@#',
             password: process.env.DB_PW_LOCAL,  // .env 숨김파일 import
             database: 'mysql',
+            multipleStatements: true,   // procedure 사용시 적용...
             dateStrings: true // nodejs timestamp와 같은 형식으로...
         },
         dev: { // real server db info
@@ -25,6 +26,7 @@ module.exports = (function() {
             minIdle: 10,
             queueTimeout: 10000 // 밀리세컨드
             */
+            multipleStatements: true,   // procedure 사용시 적용...
             dateStrings: true // nodejs timestamp와 같은 형식으로...
         },
         real: { // dev server db info
@@ -35,6 +37,7 @@ module.exports = (function() {
             password: process.env.DB_PW_REAL,   // .env 숨김파일 import
             database: '21cnkc',
             connectionLimit: 10,
+            multipleStatements: true,   // procedure 사용시 적용...
             dateStrings: true // nodejs timestamp와 같은 형식으로...
         }
     }

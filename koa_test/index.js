@@ -32,10 +32,19 @@ const cors = require('@koa/cors'); // npm install --save koa2-cors
 
 //const corsOpt = require('./cors/corsOpt.js');
 //app.use(cors(corsOpt.corsOptions));
+//
+//
+// XMLHttpRequest대신 ==> Request.js 사용하기
+// 설치는 2개 필요 => request, request-promise-native
+// 선언은 1개만 필요 => request-promise-native
+// 참조 : https://medium.com/harrythegreat/node-js%EC%97%90%EC%84%9C-request-js-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0-28744c52f68d
+// # npm install request --save
+// # npm install request-promise-native --save
+//
+// 전역변수로 사용
+//request = require('request');
+request = require('request-promise-native');    // async, awiat 적용시 사용...
 
-// XMLHttpRequest대신 Request.js 사용하기
-//전역변수로 사용
-request = require('request');
 
 const app = new Koa();
 
